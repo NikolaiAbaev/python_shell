@@ -35,9 +35,14 @@ def type_handle(args):
         print(f"{args[0]} not found")
 
 
+def pwd_handle(args):
+    print(os.getcwd())
+
+
 built_ins = {"exit": exit_handle,
              "echo": echo_handle,
-             "type": type_handle,}
+             "type": type_handle,
+             "pwd": pwd_handle,}
 
 
 def main():
@@ -56,6 +61,7 @@ def main():
             print(f"{command}: command not found")
         
         sys.stdout.flush()
+
 
 if __name__ == "__main__":
     main()
