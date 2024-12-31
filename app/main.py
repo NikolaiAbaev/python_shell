@@ -2,8 +2,27 @@ import sys
 import os
 import subprocess
 
+from typing import Optional
 
-#from typing import Optional
+
+# HELPER FUNCTIONS 
+def path_parcer(location):
+    counter = 0
+    for i in location:
+        if i == '/':
+            counter += 1
+    
+    counter -= 1
+    result = ''
+    for i in location:
+        if i == '/':
+            if counter == 0:
+                break
+            else:
+                counter -= 1
+        result += i
+    return result
+# HELPER FUNCTIONS END
 
 
 def locate_exec(command):
@@ -39,10 +58,24 @@ def pwd_handle(args):
     print(os.getcwd())
 
 
+def cd_handle(args):
+    current_dir = os.getcwd()
+    if args != []:
+        if args[0] == "..":
+            #handle the very edge case
+            os.chdir(path_parcer(current_dir))
+        else:
+            try:
+                os.chdir("".join(args))
+            except FileNotFoundError:
+                print(f"cd: {''.join(args)}: No such file or directory")
+
+
 built_ins = {"exit": exit_handle,
              "echo": echo_handle,
              "type": type_handle,
-             "pwd": pwd_handle,}
+             "pwd": pwd_handle,
+             "cd": cd_handle,}
 
 
 def main():
